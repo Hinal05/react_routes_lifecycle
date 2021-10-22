@@ -1,17 +1,40 @@
-import React from 'react';
+import React from 'react'; // Dependencies
 import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import { BrowserRouter, Route, Link, NavLink, Switch } from 'react-router-dom';
 
-ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  document.getElementById('root')
-);
+// Components
+import Home from './components/home' // Import home component
+import Profile from './components/profiles'; // Import profile component
+import Posts from './components/posts'; // Import profile component
+import PostItem from './components/post_item'; // Import profile component
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
+// Using Props
+const App = () => {
+  return (
+    <BrowserRouter>
+      <div>
+        <header>
+          <NavLink to="/">Home</NavLink><br/>
+          <NavLink
+            to="/posts"
+            activeStyle={{color:'red'}}
+            activeClassName="selected"
+          >Posts</NavLink><br />
+          <NavLink to={{
+            pathname:'/profile',
+            hash:'#francis',
+            search:'?profile=true'
+          }}>Profile</NavLink>
+          <hr/>
+          <Switch>
+            <Route path="/profile" component={Profile} />
+            <Route path="/posts/:id/:username" component={PostItem} /> {/* Dynamic value */}
+            <Route path="/posts" exact component={Posts} />
+            <Route path="/" exact component={Home} />  {/*  Render posts, profile and home name without exact*} */}
+          </Switch>
+        </header>
+      </div>
+    </BrowserRouter>
+  )
+}
+ReactDOM.render(<App />, document.querySelector('#root'));
